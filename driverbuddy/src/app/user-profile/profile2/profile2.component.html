@@ -1,0 +1,89 @@
+<app-home></app-home>
+ <div class="main">
+   <form #profileForm="ngForm" (ngSubmit)="profileForm.valid && onSubmit(profileForm)">
+     <input type="hidden" name="_id" #_id="ngModel" [(ngModel)]="UserProfileService.selectEmployee._id">
+     <input type="text" #firstName="ngModel" [(ngModel)]="UserProfileService.selectEmployee.firstName" name="firstName" placeholder="First Name"
+     required  [ngClass]="{'invalid-textbox' :profileForm.submitted && !firstName.valid }">
+     <div *ngIf="profileForm.submitted && !firstName.valid">
+       <label class="validation-message">This field is required.</label>
+     </div><br>
+  
+     <input type="text" #lastName="ngModel" [(ngModel)]="UserProfileService.selectEmployee.lastName" name="lastName" placeholder="Last Name"
+     required  [ngClass]="{'invalid-textbox' :profileForm.submitted && !lastName.valid }">
+     <div *ngIf="profileForm.submitted && !lastName.valid">
+       <label class="validation-message">This field is required.</label>
+     </div><br>
+     <input type="text" #nic="ngModel" [(ngModel)]="UserProfileService.selectEmployee.nic" name="nic" placeholder="NIC"
+     required [pattern]="nicRegex"  [ngClass]="{'invalid-textbox' :profileForm.submitted && !nic.valid }">
+     <div *ngIf="profileForm.submitted && nic.errors">
+      <label *ngIf="nic.errors.required" class="validation-message">This field is required.</label>
+      <label *ngIf="nic.errors.pattern" class="validation-message">Invalid NIC address.</label>
+    </div><br>
+     <input type="text" #mobile="ngModel" [(ngModel)]="UserProfileService.selectEmployee.mobile" name="mobile" placeholder="Mobile No"
+     required  [ngClass]="{'invalid-textbox' :profileForm.submitted && !mobile.valid }">
+     <div *ngIf="profileForm.submitted && !mobile.valid">
+       <label class="validation-message">This field is required.</label>
+     </div><br>
+     <input type="text" #email="ngModel" [(ngModel)]="UserProfileService.selectEmployee.email" name="email" placeholder="Email"
+     required [pattern]="emailRegex"  [ngClass]="{'invalid-textbox' :profileForm.submitted && !email.valid }">
+     <div *ngIf="profileForm.submitted && email.errors">
+       <label *ngIf="email.errors.required" class="validation-message">This field is required.</label>
+       <label *ngIf="email.errors.pattern" class="validation-message">Invalid email address.</label>
+     </div><br>
+ 
+     <input type="text" #policeId="ngModel" [(ngModel)]="UserProfileService.selectEmployee.policeId" name="policeId" placeholder="Police id"
+     required  [ngClass]="{'invalid-textbox' :profileForm.submitted && !policeId.valid }">
+     <div *ngIf="profileForm.submitted && !policeId.valid">
+       <label class="validation-message">This field is required.</label>
+     </div><br>
+     
+ 
+    
+     <input type="submit" value="Submit">
+     <br>
+     
+ </form>
+ 
+ <!-- Success message -->
+ <div class="success" *ngIf="showSucessMessage">
+     Saved successfully
+   </div>
+   
+   <!-- Error message -->
+   <div class="alert" *ngIf="serverErrorMessages">
+     {{serverErrorMessages}}
+   </div>
+   <div>
+     <table class="responsive-table highlight">
+       <thead>
+         <tr>
+           <th>FirstName</th>
+            <th>LastName</th>
+            <th>NIC</th>
+            <th>Mobile</th>
+            <th>Email</th>
+            <th>Police id</th>
+           
+            <th></th>
+         </tr>
+       </thead>
+       <tr *ngFor="let po of UserProfileService.employees">
+         <td>{{po.firstName}}</td>
+         <td>{{po.lastName}}</td>
+         <td>{{po.nic}}</td>
+         <td>{{po.mobile}}</td>
+         <td>{{po.email}}</td>
+         <td>{{po.policeId}}</td>
+         
+         <td>
+             <a class="action-btn" >
+               <i class="material-icons" (click)="onEdit(po)">edit</i>
+             </a>
+             <a class="action-btn">
+               <i class="material-icons" (click)="onDelete(po._id,po.nic,profileForm)">delete</i>
+             </a>
+           </td>
+       </tr>
+     </table>
+     </div>
+ </div>
